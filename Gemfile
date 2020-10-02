@@ -39,7 +39,9 @@ end
 
 group :test do
   # ..rest of the gems in this block
-  gem "shoulda-matchers"
+  gem 'shoulda-matchers'
+  gem 'faker'
+  gem 'database_cleaner'
 end
 
 group :development do
