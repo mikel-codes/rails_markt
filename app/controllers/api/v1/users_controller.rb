@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApplicationController
             user.save!
             render json: user, status: 201, location: [:api, user]
         else
-            render json: user.errors, status: 422
+            render json: {errors: user.errors}, status: 422
         end
     end
 
