@@ -13,7 +13,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         end
         
         it "returns the information of a selected user by a hash" do
-            user_response = JSON.parse(response.body, symbolize_names: true)
+            user_response = json_response
             expect(user_response[:email]).to eql @user.email
         end
 
@@ -27,7 +27,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                 post :create, params: {user: @user_attributes}, format: :json
             end
             it "renders then json representation for the user record just created" do
-                user_response = JSON.parse(response.body, symbolize_names: true)
+                user_response = json_response
                 expect(user_response[:email]).to eql @user_attributes[:email]
             end
             it { should respond_with 201 } 
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
             end
 
             it "renders the errors of invalid object based on attrs definition" do
-                user_response = JSON.parse(response.body, symbolize_names: true)
+                user_response = json_response
                 expect(user_response).to have_key(:errors)
             end
             
@@ -65,7 +65,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
             end
 
             it "renders the json representation for the updated user" do
-                user_response = JSON.parse(response.body, symbolize_names: true)
+                user_response = json_response
                 expect(user_response[:email]).to eql "new@email.com"
             end
             it {should respond_with 200}
