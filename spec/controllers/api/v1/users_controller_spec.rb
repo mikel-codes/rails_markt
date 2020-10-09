@@ -38,7 +38,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                 @invalid_user_attrs = {password: "12345", password_confirmation: "12345"}
                 post :create, params: {user: @invalid_user_attrs}, format: :json
             end
-            
+
             it "renders the errors of invalid object based on attrs definition" do
                 user_response = JSON.parse(response.body, symbolize_names: true)
                 expect(user_response).to have_key(:errors)
@@ -60,15 +60,33 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                 @user = FactoryBot.create :user
                 patch :update, params: {
                     id: @user.id,
-                    user: {email: ""},
-                    format: :json
-                }
+                    user: {email: "new@email.com"},
+                }, format: :json
             end
 
-           # it "renders the json representation for the updated user" do
-           #     user_response = JSON.parse(response.body, symbolize_names: true)
-            #    expect(user_response[:email]).to eql @user.email
-            #end
+            it "renders the json representation for the updated user" do
+                user_response = JSON.parse(response.body, symbolize_names: true)
+                expect(user_response[:email]).to eql "new@email.com"
+            end
+            it {should respond_with 200}
+        end
+
+        context "when no update occurs" do
+            before(:each) do
+                @user = FactoryBot.create :user
+                patch :update, params: {id: @user.id, user: {email: "bademail.com"}}
+            end
+
+            it 'renders an error key for invalid user object' do
+                user_response = JSON.parse response.body, symbolize_names: true
+                expect(user_response).to have_key(:errors)
+            end
+
+            it "renders the error as json " do
+                user_response = JSON.parse response.body, symbolize_names: true
+                expect(user_response[:errors][:email]).to include "is invalid"
+            end
+            it {should respond_with 422}
         end
     end
 
