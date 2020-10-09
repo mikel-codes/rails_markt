@@ -20,6 +20,35 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         it { should respond_with 200 }
     end
 
+    describe "POST #create" do
+        context "user is successfully created" do
+            before(:each) do 
+                @user_attributes = FactoryBot.attributes_for :user
+                post :create, params: {user: @user.user_attributes}
+            end
+            it "renders then json representation for the user record just created" do
+                user_response = JSON.parse(response.body, symbolize_names: true)
+                puts(user_response)
+                expect(user_response[:email]).to eql @user_attributes[:email]
+            end
+            it { should respond_with 201 } 
+        end
+
+        context "user could not be created" do 
+            before(:each) do
+                @invalid_user_attrs = {password: "12345", password_confirmation: "12345"}
+                post :create, params: {user: @invalid_user_attrs}
+            end
+            it "should not created the invalid object based on attrs definition" do
+                user_response = JSON.parse(response.body, symbolize_names: true)
+                expect(user_response).to have_key(:errors)
+            end
+
+            
+            it { should respond_with 422 }
+        end
+    end
+
     describe "PUT/PATCH #update" do
         context "when is successfully  updated" do
             before(:each) do
