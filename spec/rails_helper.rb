@@ -46,6 +46,7 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Request::JsonHelpers, :type => :controller
+  config.include Request::HeadersHelpers, :type=> :controller
   config.include Devise::Test::ControllerHelpers, type: :controller
   #before uploading this whole speck page run a database cleaner 
   # this will clean a test_db with truncation sql call
@@ -68,7 +69,9 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-
+  config.before(:each, type: :controller) do
+    include_default_accept_headers
+  end
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.

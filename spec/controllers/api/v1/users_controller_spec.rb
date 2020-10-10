@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
     #before any example 'it clause do' set the request_header to identify api version
-    before(:each) { request.headers['Accept'] = "application/vnd.market.v1"}
+
 
     #the get show action lets describe a test for it
     describe "GET #show" do
