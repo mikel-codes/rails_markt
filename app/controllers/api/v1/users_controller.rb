@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-    before_action :set_user, only: [:show, :update, :destroy]
+    before_action :set_user, only: [:show]
+    before_action :authenticate_with_token!, only: [:update, :destroy]
     #GET
     def show
         render json: @user
@@ -17,15 +18,16 @@ class Api::V1::UsersController < ApplicationController
 
     #PUT/PATCH
     def update
-        if @user.update(user_params)
-            render json: @user, status: 200, location: [:api, @user]
+        user = current_user
+        if user.update(user_params)
+            render json: user, status: 200, location: [:api, user]
         else
-            render json: {errors: @user.errors}, status: 422
+            render json: {errors: user.errors}, status: 422
         end
     end
 
     def destroy
-        @user.destroy
+        current_user.destroy
         head 204
     end
 
