@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
 
   it { should respond_to(:auth_token) }
   it { should validate_uniqueness_of(:auth_token) } 
-
+  it { should have_many(:products)}
   describe "generate authentication token" do
     it "generates a unique token" do
       Devise.stub(:friendly_token).and_return "auniquetoken123" do

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :products
   before_create :generate_authentication_token!
   validates :auth_token , uniqueness: true
   # Include default devise modules. Others available are:
