@@ -29,6 +29,10 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+#for user authentication 
+# a battle tested gem that serves almost all the possiblities of a standard user
+gem 'devise'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails'
@@ -39,7 +43,9 @@ end
 
 group :test do
   # ..rest of the gems in this block
-  gem "shoulda-matchers"
+  gem 'shoulda-matchers'
+  gem 'faker'
+  gem 'database_cleaner'
 end
 
 group :development do
