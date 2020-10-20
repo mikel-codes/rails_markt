@@ -14,7 +14,8 @@ class Api::V1::SessionsController < ApplicationController
     end
 
     def destroy
-        user = User.find_by auth_token: params[:id]
+        # once a section is deleted , automatically create a new auth and save
+        user = User.find_by auth_token: auth_token
         user.generate_authentication_token!
         user.save
         head 204
